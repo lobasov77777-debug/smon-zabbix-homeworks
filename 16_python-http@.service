@@ -1,0 +1,14 @@
+[Unit]
+Description=Simple Python HTTP server on port %i
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/cluster-hw/%i
+ExecStart=/usr/bin/python3 -m http.server %i --bind 127.0.0.1
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
