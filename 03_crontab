@@ -1,0 +1,1 @@
+0 2 * * * /usr/local/bin/netology-backup-home >> /tmp/netology-backup.log 2>&1
