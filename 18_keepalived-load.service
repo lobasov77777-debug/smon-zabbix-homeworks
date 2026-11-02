@@ -1,0 +1,13 @@
+[Unit]
+Description=Keepalived VRRP with load-based priority
+After=network-online.target nginx.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/local/bin/update_load_priority.sh
+ExecStart=/usr/local/sbin/keepalived --dont-fork --log-console --log-detail --use-file=/etc/keepalived/keepalived-load.conf
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
