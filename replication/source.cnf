@@ -1,0 +1,8 @@
+[mysqld]
+server-id=1
+log-bin=mysql-bin
+binlog-format=ROW
+gtid-mode=ON
+enforce-gtid-consistency=ON
+innodb-buffer-pool-size=64M
+innodb-redo-log-capacity=16M

@@ -2,9 +2,45 @@
 
 ## Задание 1. Репликация MySQL
 
+Настроена однонаправленная асинхронная репликация MySQL 8.0.46 в закрытой сети Docker. Источник `source` принимает запись и сохраняет изменения в binlog. Реплика `replica` получает и применяет транзакции по GTID и работает в режиме `super_read_only=ON`.
+
+| Узел | server_id | GTID | read_only | super_read_only |
+|---|---:|---|---:|---:|
+| Источник | 1 | ON | 0 | 0 |
+| Реплика | 2 | ON | 1 | 1 |
+
+**Конфигурация.** [Docker Compose](replication/compose.yaml) · [MySQL источника](replication/source.cnf) · [MySQL реплики](replication/replica.cnf)
+
 ![Параметры исходного MySQL и реплики с уникальными server_id и GTID](01_replication_config.png)
 
+**Настройка канала.** На источнике создан пользователь репликации с правом `REPLICATION SLAVE`. На реплике выполнены команды ниже. Скрипт подставляет сгенерированный пароль автоматически.
+
+```sql
+SET PERSIST super_read_only = ON;
+CHANGE REPLICATION SOURCE TO
+  SOURCE_HOST = 'source',
+  SOURCE_USER = 'replicator',
+  SOURCE_PASSWORD = '<пароль пользователя репликации>',
+  SOURCE_AUTO_POSITION = 1,
+  GET_SOURCE_PUBLIC_KEY = 1;
+START REPLICA;
+SHOW REPLICA STATUS\G
+```
+
 ![Оба потока репликации работают. На реплике видна строка, записанная на источнике](02_replication_running.png)
+
+**Проверка.** На источнике создана таблица и добавлена строка `id=1206`. После применения GTID реплика вернула `Written on source`. Затем на источнике выполнен `UPDATE`, и реплика вернула `Updated on source`. Прямая попытка записи на реплике отклонена с `ERROR 1290`. В статусе оба потока показывают `Yes`, коды ошибок равны `0`.
+
+![Повторная проверка на чистых контейнерах. INSERT и UPDATE дошли с источника, прямая запись на реплике отклонена](03_replication_insert_update.png)
+
+[Фактический текстовый вывод проверки](replication/verification.txt) · [Скрипт развёртывания и проверки](replication/verify.sh)
+
+**Запуск на чистых томах.** Из каталога `replication` выполните команды ниже. Нужны Docker Compose, Bash и OpenSSL. При необходимости запускайте Docker с правами администратора.
+
+```bash
+export MYSQL_ROOT_PASSWORD="$(openssl rand -hex 20)"
+bash verify.sh
+```
 
 ## Задание 2. План шардирования
 

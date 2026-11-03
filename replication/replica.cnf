@@ -1,0 +1,10 @@
+[mysqld]
+server-id=2
+log-bin=mysql-bin
+relay-log=relay-bin
+log-replica-updates=ON
+binlog-format=ROW
+gtid-mode=ON
+enforce-gtid-consistency=ON
+innodb-buffer-pool-size=64M
+innodb-redo-log-capacity=16M

@@ -1,0 +1,44 @@
+
+=== Server roles ===
+
+[source]
++-----------+-----------+-----------+-----------------+
+| server_id | gtid_mode | read_only | super_read_only |
++-----------+-----------+-----------+-----------------+
+|         1 | ON        |         0 |               0 |
++-----------+-----------+-----------+-----------------+
+
+[replica]
++-----------+-----------+-----------+-----------------+
+| server_id | gtid_mode | read_only | super_read_only |
++-----------+-----------+-----------+-----------------+
+|         2 | ON        |         1 |               1 |
++-----------+-----------+-----------+-----------------+
+
+[source] CREATE DATABASE, CREATE TABLE, INSERT
+[replica] SELECT after waiting for source GTIDs
++------+-------------------+
+| id   | note              |
++------+-------------------+
+| 1206 | Written on source |
++------+-------------------+
+
+[source] UPDATE id=1206
+[replica] SELECT after waiting for source GTIDs
++------+-------------------+
+| id   | note              |
++------+-------------------+
+| 1206 | Updated on source |
++------+-------------------+
+
+[replica] Attempt to write directly
+ERROR 1290 (HY000) at line 1: The MySQL server is running with the --super-read-only option so it cannot execute this statement
+
+[replica] SHOW REPLICA STATUS (selected fields)
+                  Source_Host: source
+           Replica_IO_Running: Yes
+          Replica_SQL_Running: Yes
+        Seconds_Behind_Source: 0
+                Last_IO_Errno: 0
+               Last_SQL_Errno: 0
+                Auto_Position: 1

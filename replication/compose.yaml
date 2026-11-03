@@ -1,0 +1,21 @@
+services:
+  source:
+    image: mysql:8.0.46
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./source.cnf:/etc/mysql/conf.d/replication.cnf:ro
+      - source-data:/var/lib/mysql
+  replica:
+    image: mysql:8.0.46
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./replica.cnf:/etc/mysql/conf.d/replication.cnf:ro
+      - replica-data:/var/lib/mysql
+networks:
+  default:
+    internal: true
+volumes:
+  source-data:
+  replica-data:
