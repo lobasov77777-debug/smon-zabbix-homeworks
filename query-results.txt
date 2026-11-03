@@ -1,0 +1,67 @@
++----------+-----------+------------+------------+----------------+
+| store_id | last_name | first_name | city       | customer_count |
++----------+-----------+------------+------------+----------------+
+|        1 | Hillyer   | Mike       | Lethbridge |            326 |
++----------+-----------+------------+------------+----------------+
++---------------------+
+| films_above_average |
++---------------------+
+|                 489 |
++---------------------+
++---------+----------+--------------+
+| month   | total    | rental_count |
++---------+----------+--------------+
+| 2005-07 | 28368.91 |         6709 |
++---------+----------+--------------+
++----------+-----------+------------+-------------+--------------+
+| staff_id | last_name | first_name | sales_count | Премия |
++----------+-----------+------------+-------------+--------------+
+|        1 | Hillyer   | Mike       |        8054 | Да         |
+|        2 | Stephens  | Jon        |        7990 | Нет       |
++----------+-----------+------------+-------------+--------------+
++---------+------------------------+
+| film_id | title                  |
++---------+------------------------+
+|      14 | ALICE FANTASIA         |
+|      33 | APOLLO TEEN            |
+|      36 | ARGONAUTS TOWN         |
+|      38 | ARK RIDGEMONT          |
+|      41 | ARSENIC INDEPENDENCE   |
+|      87 | BOONDOCK BALLROOM      |
+|     108 | BUTCH PANTHER          |
+|     128 | CATCH AMISTAD          |
+|     144 | CHINATOWN GLADIATOR    |
+|     148 | CHOCOLATE DUCK         |
+|     171 | COMMANDMENTS EXPRESS   |
+|     192 | CROSSING DIVORCE       |
+|     195 | CROWDS TELEMARK        |
+|     198 | CRYSTAL BREAKING       |
+|     217 | DAZED PUNK             |
+|     221 | DELIVERANCE MULHOLLAND |
+|     318 | FIREHOUSE VIETNAM      |
+|     325 | FLOATS GARDEN          |
+|     332 | FRANKENSTEIN STRANGER  |
+|     359 | GLADIATOR WESTWARD     |
+|     386 | GUMP DATE              |
+|     404 | HATE HANDICAP          |
+|     419 | HOCUS FRIDA            |
+|     495 | KENTUCKIAN GIANT       |
+|     497 | KILL BROTHERHOOD       |
+|     607 | MUPPET MILE            |
+|     642 | ORDER BETRAYED         |
+|     669 | PEARL DESTINY          |
+|     671 | PERDITION FARGO        |
+|     701 | PSYCHO SHRUNK          |
+|     712 | RAIDERS ANTITRUST      |
+|     713 | RAINBOW SHOCK          |
+|     742 | ROOF CHAMPION          |
+|     801 | SISTER FREDDY          |
+|     802 | SKY MIRACLE            |
+|     860 | SUICIDES SILENCE       |
+|     874 | TADPOLE PARK           |
+|     909 | TREASURE COMMAND       |
+|     943 | VILLAIN DESPERATE      |
+|     950 | VOLUME HOUSE           |
+|     954 | WAKE JAWS              |
+|     955 | WALLS ARTIST           |
++---------+------------------------+
