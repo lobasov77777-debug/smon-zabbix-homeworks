@@ -1,0 +1,10 @@
+all:
+  children:
+    rabbitmq:
+      hosts:
+        rmq01:
+          ansible_host: 192.168.56.51
+        rmq02:
+          ansible_host: 192.168.56.52
+      vars:
+        ansible_user: vagrant

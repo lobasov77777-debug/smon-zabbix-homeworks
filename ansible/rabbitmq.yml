@@ -1,0 +1,131 @@
+---
+- name: Install RabbitMQ and configure node names
+  hosts: rabbitmq
+  become: true
+  tasks:
+    - name: Set the node hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+
+    - name: Add cluster members to hosts
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        marker: "# {mark} RABBITMQ CLUSTER"
+        block: |
+          {% for node in groups['rabbitmq'] %}
+          {{ hostvars[node].ansible_host }} {{ node }}
+          {% endfor %}
+
+    - name: Install RabbitMQ from Debian Bookworm
+      ansible.builtin.apt:
+        name: rabbitmq-server
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Enable and start RabbitMQ
+      ansible.builtin.systemd:
+        name: rabbitmq-server
+        enabled: true
+        state: started
+
+    - name: Wait for the local broker
+      ansible.builtin.command: rabbitmqctl await_startup
+      changed_when: false
+
+    - name: Enable the management plugin
+      ansible.builtin.command: rabbitmq-plugins enable rabbitmq_management
+      register: rabbitmq_plugins
+      changed_when: "'started' in rabbitmq_plugins.stdout"
+
+- name: Join fresh nodes to the first RabbitMQ node
+  hosts: rabbitmq
+  become: true
+  serial: 1
+  vars:
+    rabbitmq_seed: "{{ groups['rabbitmq'][0] }}"
+    rabbitmq_seed_node: "rabbit@{{ rabbitmq_seed }}"
+  tasks:
+    - name: Check local cluster membership
+      ansible.builtin.command: rabbitmqctl cluster_status
+      register: rabbitmq_membership
+      changed_when: false
+
+    - name: Join a new node
+      when:
+        - inventory_hostname != rabbitmq_seed
+        - rabbitmq_seed_node not in rabbitmq_membership.stdout_lines
+      block:
+        - name: Verify the node is standalone
+          ansible.builtin.assert:
+            that:
+              - (rabbitmq_membership.stdout_lines | select('match', '^rabbit@') | unique | list) == ['rabbit@' ~ inventory_hostname]
+            fail_msg: This playbook can only join a standalone node.
+
+        - name: Check for queues on the joining node
+          ansible.builtin.command: rabbitmqctl -q list_queues -p / name
+          register: rabbitmq_existing_queues
+          changed_when: false
+
+        - name: Require a fresh joining node
+          ansible.builtin.assert:
+            that: rabbitmq_existing_queues.stdout | trim == ''
+            fail_msg: Move existing queues before joining this node.
+
+        - name: Read the seed Erlang cookie
+          ansible.builtin.slurp:
+            src: /var/lib/rabbitmq/.erlang.cookie
+          delegate_to: "{{ rabbitmq_seed }}"
+          register: rabbitmq_cookie
+          no_log: true
+
+        - name: Stop RabbitMQ before copying the cookie
+          ansible.builtin.systemd:
+            name: rabbitmq-server
+            state: stopped
+
+        - name: Set the shared Erlang cookie
+          ansible.builtin.copy:
+            dest: /var/lib/rabbitmq/.erlang.cookie
+            content: "{{ rabbitmq_cookie.content | b64decode }}"
+            owner: rabbitmq
+            group: rabbitmq
+            mode: '0400'
+          no_log: true
+
+        - name: Start RabbitMQ with the shared cookie
+          ansible.builtin.systemd:
+            name: rabbitmq-server
+            state: started
+
+        - name: Wait for the broker before joining
+          ansible.builtin.command: rabbitmqctl await_startup
+          changed_when: false
+
+        - name: Stop the RabbitMQ application
+          ansible.builtin.command: rabbitmqctl stop_app
+
+        - name: Join the seed cluster
+          ansible.builtin.command:
+            argv:
+              - rabbitmqctl
+              - join_cluster
+              - "{{ rabbitmq_seed_node }}"
+
+        - name: Start the RabbitMQ application
+          ansible.builtin.command: rabbitmqctl start_app
+
+- name: Apply the HA policy once on the seed
+  hosts: rabbitmq[0]
+  become: true
+  tasks:
+    - name: Mirror every classic queue to all available nodes
+      ansible.builtin.command:
+        argv:
+          - rabbitmqctl
+          - set_policy
+          - --apply-to
+          - queues
+          - ha-all
+          - '.*'
+          - '{"ha-mode":"all","ha-sync-mode":"automatic"}'
