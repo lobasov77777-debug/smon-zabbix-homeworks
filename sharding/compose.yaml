@@ -1,0 +1,40 @@
+version: '3.7'
+x-mysql: &mysql
+  image: mysql:8.0
+  environment:
+    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD}
+  command:
+    - --innodb-buffer-pool-size=48M
+    - --innodb-redo-log-capacity=16M
+    - --performance-schema=OFF
+    - --max-connections=20
+  networks: [lab]
+services:
+  users-even:
+    <<: *mysql
+    volumes:
+      - users-even:/var/lib/mysql
+      - ./sql/users-even.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+  users-odd:
+    <<: *mysql
+    volumes:
+      - users-odd:/var/lib/mysql
+      - ./sql/users-odd.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+  catalog:
+    <<: *mysql
+    volumes:
+      - catalog:/var/lib/mysql
+      - ./sql/catalog.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+  retail:
+    <<: *mysql
+    volumes:
+      - retail:/var/lib/mysql
+      - ./sql/retail.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+volumes:
+  users-even:
+  users-odd:
+  catalog:
+  retail:
+networks:
+  lab:
+    internal: true
