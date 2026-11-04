@@ -1,0 +1,37 @@
+# Nmap 7.93 scan initiated Wed Nov  4 10:44:07 2026 as: nmap -n -Pn -sS -p- -T4 -oN 01_tcp_all.txt 192.168.91.80
+Nmap scan report for 192.168.91.80
+Host is up (0.00023s latency).
+Not shown: 65506 closed tcp ports (reset)
+PORT      STATE SERVICE
+21/tcp    open  ftp
+22/tcp    open  ssh
+23/tcp    open  telnet
+25/tcp    open  smtp
+53/tcp    open  domain
+80/tcp    open  http
+111/tcp   open  rpcbind
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+512/tcp   open  exec
+513/tcp   open  login
+514/tcp   open  shell
+1099/tcp  open  rmiregistry
+1524/tcp  open  ingreslock
+2049/tcp  open  nfs
+2121/tcp  open  ccproxy-ftp
+3306/tcp  open  mysql
+3632/tcp  open  distccd
+5432/tcp  open  postgresql
+5900/tcp  open  vnc
+6000/tcp  open  X11
+6667/tcp  open  irc
+6697/tcp  open  ircs-u
+8180/tcp  open  unknown
+8787/tcp  open  msgsrvr
+34561/tcp open  unknown
+39713/tcp open  unknown
+43569/tcp open  unknown
+56591/tcp open  unknown
+MAC Address: 08:00:27:92:E1:40 (Oracle VirtualBox virtual NIC)
+
+# Nmap done at Wed Nov  4 10:44:22 2026 -- 1 IP address (1 host up) scanned in 14.94 seconds

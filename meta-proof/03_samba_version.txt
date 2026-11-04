@@ -1,0 +1,19 @@
+# Nmap 7.93 scan initiated Wed Nov  4 10:48:30 2026 as: nmap -n -Pn -p 139,445 --script smb-os-discovery -oN 03_samba_version.txt 192.168.91.80
+Nmap scan report for 192.168.91.80
+Host is up (0.00051s latency).
+
+PORT    STATE SERVICE
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+MAC Address: 08:00:27:92:E1:40 (Oracle VirtualBox virtual NIC)
+
+Host script results:
+| smb-os-discovery:
+|   OS: Unix (Samba 3.0.20-Debian)
+|   Computer name: metasploitable
+|   NetBIOS computer name:
+|   Domain name: localdomain
+|   FQDN: metasploitable.localdomain
+|_  System time: 2026-11-04T05:48:29-05:00
+
+# Nmap done at Wed Nov  4 10:48:31 2026 -- 1 IP address (1 host up) scanned in 0.23 seconds

@@ -1,0 +1,12 @@
+# Nmap 7.93 scan initiated Wed Nov  4 10:47:55 2026 as: nmap -n -Pn -sF -p 21,22,80,9999 --max-retries 1 -oN FIN.nmap.txt 192.168.91.80
+Nmap scan report for 192.168.91.80
+Host is up (0.00050s latency).
+
+PORT     STATE         SERVICE
+21/tcp   open|filtered ftp
+22/tcp   open|filtered ssh
+80/tcp   open|filtered http
+9999/tcp closed        abyss
+MAC Address: 08:00:27:92:E1:40 (Oracle VirtualBox virtual NIC)
+
+# Nmap done at Wed Nov  4 10:47:56 2026 -- 1 IP address (1 host up) scanned in 1.31 seconds
