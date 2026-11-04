@@ -1,0 +1,8 @@
+[DEFAULT]
+banaction = nftables-multiport
+[sshd]
+enabled = true
+backend = systemd
+maxretry = 3
+findtime = 60
+bantime = 120

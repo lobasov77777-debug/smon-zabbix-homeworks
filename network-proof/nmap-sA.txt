@@ -1,0 +1,8 @@
+# Nmap 7.93 scan initiated Wed Nov  4 10:45:42 2026 as: nmap -n -Pn -sA -oN network-proof/nmap-sA.txt 192.168.91.32
+Nmap scan report for 192.168.91.32
+Host is up (0.00023s latency).
+All 1000 scanned ports on 192.168.91.32 are in ignored states.
+Not shown: 1000 unfiltered tcp ports (reset)
+MAC Address: 08:00:27:1F:E9:CF (Oracle VirtualBox virtual NIC)
+
+# Nmap done at Wed Nov  4 10:45:42 2026 -- 1 IP address (1 host up) scanned in 0.30 seconds

@@ -1,0 +1,3 @@
+alert tcp 192.168.91.31 any -> 192.168.91.32 any (msg:"LAB TCP ACK burst"; flow:stateless; flags:A; threshold:type both, track by_src, count 5, seconds 10; sid:1001301; rev:1;)
+alert tcp 192.168.91.31 any -> 192.168.91.32 any (msg:"LAB TCP SYN burst"; flow:stateless; flags:S; threshold:type both, track by_src, count 12, seconds 10; sid:1001302; rev:1;)
+alert tcp 192.168.91.31 any -> 192.168.91.32 22 (msg:"LAB Repeated SSH client banners"; flow:established,to_server; content:"SSH-"; depth:4; threshold:type both, track by_src, count 2, seconds 20; sid:1001303; rev:1;)

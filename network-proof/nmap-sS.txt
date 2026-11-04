@@ -1,0 +1,9 @@
+# Nmap 7.93 scan initiated Wed Nov  4 10:45:43 2026 as: nmap -n -Pn -sS -oN network-proof/nmap-sS.txt 192.168.91.32
+Nmap scan report for 192.168.91.32
+Host is up (0.00026s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+MAC Address: 08:00:27:1F:E9:CF (Oracle VirtualBox virtual NIC)
+
+# Nmap done at Wed Nov  4 10:45:43 2026 -- 1 IP address (1 host up) scanned in 0.32 seconds
